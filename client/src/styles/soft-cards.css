@@ -1,0 +1,10 @@
+/* Softer, friendlier cards while retaining the editorial desktop layout. */
+.hero-photo{border-radius:28px 6px 28px 6px;box-shadow:0 22px 48px rgba(20,65,52,.13)}
+.destination-card{border-radius:22px;background:#fff;overflow:hidden;box-shadow:0 12px 30px rgba(21,59,48,.07);transition:transform .25s ease,box-shadow .25s ease}
+.destination-card:hover{transform:translateY(-5px);box-shadow:0 20px 38px rgba(21,59,48,.14)}
+.card-image{border-radius:22px 22px 0 0;height:276px}
+.category-tag{left:14px;top:14px;border-radius:999px;padding:8px 11px;box-shadow:0 5px 15px rgba(0,0,0,.08)}
+.rating{right:14px;top:14px;border-radius:999px;padding:7px 10px;box-shadow:0 5px 15px rgba(0,0,0,.08)}
+.card-content{padding:19px 20px 20px}
+.card-bottom{margin-top:16px}.destination-filters select{border-radius:12px}.category-list button{border-radius:9px}
+@media(max-width:800px){.hero-photo{border-radius:24px 5px 24px 5px}.card-image{height:300px}}
