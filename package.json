@@ -1,6 +1,7 @@
 {
   "name": "tourify",
   "private": true,
+  "type": "module",
   "scripts": { "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"", "build": "npm run build --prefix client", "vercel-build": "npm install --prefix client && npm install --prefix server && npm run build --prefix client && mkdir -p dist && cp -R client/dist/. dist/", "start": "npm run start --prefix server" },
   "devDependencies": { "concurrently": "^9.1.2" }
 }
