@@ -55,14 +55,16 @@ async function getDestinations() {
 }
 
 async function askProvider(messages, destinations) {
-  const base = (process.env.AI_BASE_URL || '').replace(/\/$/, '')
-  if (!base || !process.env.AI_API_KEY || !process.env.AI_MODEL) return null
+  const base = (process.env.AI_BASE_URL || 'https://maas.qwencloudapi.com/compatible-mode/v1').replace(/\/$/, '')
+  const apiKey = process.env.DASHSCOPE_API_KEY || process.env.AI_API_KEY
+  const model = process.env.AI_MODEL || 'qwen3.8-flash'
+  if (!apiKey) return null
   const endpoint = base.endsWith('/chat/completions') ? base : `${base}/chat/completions`
   const response = await fetch(endpoint, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.AI_API_KEY}` },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
     body: JSON.stringify({
-      model: process.env.AI_MODEL,
+      model,
       temperature: 0.35,
       max_tokens: 350,
       messages: [
