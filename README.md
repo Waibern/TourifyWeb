@@ -9,11 +9,12 @@ Smart Tourism E-Ticketing for discovering Indonesian destinations, booking ticke
 - Supabase PostgreSQL schema and five seeded destinations
 - Destination search, filtering, booking, secure QR ticket generation, ticket history, and print view
 - Admin dashboard, booking/user lists, destination deletion, and server-validated check-in flow
+- Floating bilingual AI travel assistant with destination-aware fallback replies
 
 ## Setup
 
 1. Create a Supabase project. Run [`supabase/schema.sql`](./supabase/schema.sql), then [`supabase/seed.sql`](./supabase/seed.sql) in its SQL editor.
-2. Copy `.env.example` to `.env` and fill in the Supabase URL, **service role key**, and a long random `JWT_SECRET`. Never expose the service role key in `client`.
+2. Copy `.env.example` to `.env` and fill in the Supabase URL, **service role key**, and a long random `JWT_SECRET`. Never expose the service role key in `client`. The optional `AI_BASE_URL`, `AI_API_KEY`, and `AI_MODEL` values enable an OpenAI-compatible free-tier assistant provider; when they are blank, Tourify uses its built-in destination/FAQ fallback without an AI API call.
 3. Install and run:
 
 ```bash
@@ -40,6 +41,10 @@ update users set role = 'admin' where email = 'your-admin@email.com';
 ## API notes
 
 All bookings use the current server-side destination price; client prices are never trusted. QR payloads contain a random UUID token. Ticket validation and check-in require an authenticated admin and are performed by the Express API.
+
+## AI travel assistant
+
+Public home and destination pages include a floating chat widget. It supports Indonesian and English, recommends only destinations returned by Supabase, and never handles booking or account actions. The browser calls `POST /api/chat`; provider credentials stay on the server. The route applies a small per-IP request limit and falls back to local destination recommendations if the optional provider is unavailable or not configured.
 
 ## Deploy to Vercel with your domain
 
