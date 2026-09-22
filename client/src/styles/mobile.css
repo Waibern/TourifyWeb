@@ -1,0 +1,113 @@
+/* Shared image logo plus phone-first corrections. */
+.logo { display: inline-flex; align-items: center; line-height: 0; }
+.logo img { display: block; width: 148px; height: auto; max-height: 58px; object-fit: contain; }
+
+@media (max-width: 700px) {
+  html, body, #root { max-width: 100%; overflow-x: hidden; }
+  body { padding-bottom: env(safe-area-inset-bottom); }
+  .container, footer { width: calc(100% - 32px); }
+  .nav { width: 100%; height: 68px; padding: 0 16px; border-bottom: 1px solid #e5ebe7; }
+  .nav .logo img { width: 116px; max-height: 46px; }
+  .nav nav, .nav-user span, .nav-user .admin-link, .nav-user .icon-btn { display: none; }
+  .nav-user .button { padding: 9px 13px; font-size: 12px; }
+  .mobile-nav { left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); height: 67px; padding: 5px 7px; border: 1px solid #e3ece7; border-radius: 22px; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .mobile-nav a { min-width: 0; border-radius: 16px; font-size: 10px; line-height: 1.1; padding: 7px 2px; }
+  .mobile-nav a.active { background: #e4f4eb; color: var(--dark); font-weight: 700; }
+  .mobile-nav svg { width: 19px; height: 19px; }
+  main { padding-bottom: 96px; }
+  footer { padding-bottom: 110px; }
+  .landing { display: flex; flex-direction: column; gap: 28px; min-height: 0; padding: 36px 0 34px; }
+  .landing-copy h1, .dest-hero h1 { font-size: clamp(48px, 14vw, 64px); line-height: .9; letter-spacing: -.065em; margin: 12px 0 20px; }
+  .landing-lead { font-size: 16px; line-height: 1.45; margin-bottom: 22px; }
+  .hero-search { min-height: 55px; padding: 5px 5px 5px 13px; border-radius: 14px; }
+  .hero-search input { min-width: 0; font-size: 14px; padding: 9px 7px; }
+  .hero-search a { padding: 11px 12px; font-size: 12px; }
+  .hero-stats { gap: 12px 20px; flex-wrap: wrap; margin-top: 20px; font-size: 12px; }
+  .hero-stats b { font-size: 20px; }
+  .hero-photo { width: 100%; height: 335px; border-radius: 24px 6px 24px 6px; }
+  .hero-photo div { left: 20px; bottom: 21px; }
+  .hero-photo b { font-size: 30px; }
+  .section { padding: 55px 0; }
+  .section-title { align-items: start; gap: 14px; flex-direction: column; }
+  .section-title h2, .travel-band h2, .result-heading h2 { font-size: 34px; }
+  .section-title > a { font-size: 13px; }
+  .grid { grid-template-columns: 1fr; gap: 24px; }
+  .destination-card { border-radius: 20px; box-shadow: 0 10px 26px #153c3017; overflow: hidden; }
+  .destination-card:hover { transform: none; }
+  .card-image { height: 220px; border-radius: 20px 20px 0 0; }
+  .card-content { padding: 16px 17px 18px; }
+  .card-content h3 { font-size: 25px; }
+  .description { height: auto; min-height: 0; font-size: 13px; }
+  .card-bottom { margin-top: 14px; padding-top: 13px; }
+  .travel-band { padding: 58px 0 48px; }
+  .journey { gap: 22px; margin-top: 29px; }
+  .journey span { font-size: 16px; }
+  .dest-hero { padding: 67px 0 54px; background-position: center; background-size: cover; }
+  .dest-hero .container > p:last-child { font-size: 15px; max-width: 280px; }
+  .destinations-layout { display: block; padding: 30px 0 45px; }
+  .destination-filters { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 17px; margin-bottom: 31px; box-shadow: 0 8px 24px #153c3010; }
+  .destination-filters .filter-search { border-bottom: 1px solid var(--line); padding: 0 0 9px; margin-bottom: 20px; }
+  .category-list { display: flex; gap: 7px; overflow-x: auto; margin-bottom: 21px; padding-bottom: 3px; scrollbar-width: none; }
+  .category-list::-webkit-scrollbar { display: none; }
+  .category-list button { white-space: nowrap; background: #f0f5f2; border-radius: 999px; padding: 9px 12px; font-size: 12px; }
+  .category-list button.selected { background: var(--dark); }
+  .result-heading { align-items: end; margin-bottom: 21px; }
+  .result-heading h2 { margin-top: 6px; }
+  .result-heading > p { font-size: 12px; white-space: nowrap; }
+  .detail { display: block; padding-top: 23px; padding-bottom: 115px; }
+  .gallery { height: 310px; position: relative; top: auto; border-radius: 22px; }
+  .gallery-note { left: 13px; bottom: 13px; font-size: 12px; padding: 8px 10px; }
+  .detail-info { padding-top: 27px; }
+  .detail-info h1 { font-size: 43px; line-height: .95; margin: 8px 0 12px; }
+  .long-desc { font-size: 15px; line-height: 1.6; }
+  .booking { border-radius: 18px; padding: 18px; margin-top: 22px; }
+  .page { min-height: calc(100vh - 68px); padding-top: 34px; padding-bottom: 115px; }
+  .page-title { font-size: 45px; margin-bottom: 25px; }
+  .tabs { overflow-x: auto; margin-top: 21px; }
+  .tabs button { white-space: nowrap; padding: 11px 14px; }
+  .ticket-card { grid-template-columns: 90px minmax(0, 1fr); gap: 13px; padding: 11px; border-radius: 17px; }
+  .ticket-card > img { width: 90px; height: 108px; }
+  .ticket-card h3 { font-size: 19px; margin: 7px 0; }
+  .ticket-card p { display: flex; margin: 4px 0 0; font-size: 12px; }
+  .ticket-card .button { grid-column: 1 / -1; width: 100%; }
+  .ticket-detail { width: calc(100% - 32px); margin-top: 24px; border-radius: 20px; }
+  .ticket-head { height: 65px; padding: 22px 20px; font-size: 12px; }
+  .ticket-body { padding: 26px 20px; }
+  .ticket-body h1 { font-size: 35px; line-height: 1; }
+  .ticket-data { gap: 16px 18px; margin-top: 25px; }
+  .ticket-data b { font-size: 13px; overflow-wrap: anywhere; }
+  .qr { padding-top: 22px; margin-top: 22px; }
+  .qr img { width: 165px; max-width: 100%; }
+  .print { width: calc(100% - 40px); margin: 0 20px 23px; }
+  .auth { display: block; min-height: 100svh; }
+  .auth-picture { min-height: 210px; padding: 27px 24px; }
+  .auth-picture h1 { font-size: 42px; }
+  .auth-picture p:last-child { font-size: 14px; }
+  .auth-form { padding: 32px 20px 105px; }
+  .auth-form .logo { margin-bottom: 33px; }
+  .auth-form .logo img { width: 148px; }
+  .auth-form h1 { font-size: 31px; }
+  .admin { display: block; min-height: calc(100vh - 68px); }
+  .admin aside { position: sticky; top: 68px; z-index: 4; display: flex; flex-direction: row; gap: 5px; overflow-x: auto; padding: 10px 12px; }
+  .admin aside button { flex: 0 0 auto; width: auto; padding: 10px 12px; margin: 0; font-size: 12px; white-space: nowrap; }
+  .admin-main { padding: 25px 16px 115px; }
+  .admin-hero { margin: 0 -16px 22px; padding: 30px 16px 28px; }
+  .admin-hero h1 { font-size: 38px; }
+  .dashboard-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .dashboard-stats > div { min-height: 125px; padding: 14px; border-radius: 15px; }
+  .dashboard-stats b { font-size: 21px; overflow-wrap: anywhere; }
+  .admin-panels { display: block; margin-top: 12px; }
+  .operations-card { min-height: 0; padding: 22px; border-radius: 17px; }
+  .operations-card h2 { font-size: 29px; }
+  .scanner-orb { display: none; }
+  .activity-card { margin-top: 12px; padding: 21px; border-radius: 17px; }
+  .data-table { border-radius: 14px; }
+  th, td { white-space: nowrap; padding: 12px 13px; }
+  .scanner { padding: 22px 16px; border-radius: 17px; }
+}
+@media (max-width: 380px) {
+  .landing-copy h1, .dest-hero h1 { font-size: 46px; }
+  .hero-photo { height: 300px; }
+  .hero-search a { padding-inline: 9px; }
+  .dashboard-stats > div { padding: 11px; }
+}

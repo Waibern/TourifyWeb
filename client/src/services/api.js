@@ -1,1 +1,1 @@
-import axios from 'axios';const api=axios.create({baseURL:import.meta.env.VITE_API_URL||'http://localhost:5000/api'});api.interceptors.request.use(c=>{const t=localStorage.getItem('tourify_token');if(t)c.headers.Authorization=`Bearer ${t}`;return c});export default api
+import axios from 'axios';const localApi=`http://${window.location.hostname}:5000/api`;const api=axios.create({baseURL:import.meta.env.VITE_API_URL||localApi});api.interceptors.request.use(c=>{const t=localStorage.getItem('tourify_token');if(t)c.headers.Authorization=`Bearer ${t}`;return c});export default api
