@@ -1,4 +1,320 @@
-import{useEffect,useState}from'react';import{Link,useNavigate,useParams}from'react-router-dom';import{Search,ArrowRight,MapPin,Star,CalendarDays,Users,Minus,Plus,Check,Clock,ChevronRight}from'lucide-react';import toast from'react-hot-toast';import api from'../services/api';import{useAuth}from'../contexts/AuthContext';import{DestinationCard,Footer,Loading,rupiah}from'../components/Shared';
-export function Home(){const[list,setList]=useState([]),[q,setQ]=useState(''),{user}=useAuth();useEffect(()=>{api.get('/destinations').then(r=>setList(r.data)).catch(()=>toast.error('Could not load destinations'))},[]);return <main><section className="landing container"><div className="landing-copy"><p className="eyebrow">{user?`WELCOME BACK, ${user.name.split(' ')[0].toUpperCase()}`:'INDONESIA, MADE EASY'}</p><h1>Stories worth<br/><i>leaving for.</i></h1><p className="landing-lead">A more beautiful way to find, plan, and book your next favourite place.</p><div className="hero-search"><Search/><input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==='Enter'&&(location.href=`/destinations?search=${q}`)} placeholder="Where do you want to go?"/><Link to={`/destinations?search=${q}`}>Explore <ArrowRight size={17}/></Link></div><div className="hero-stats"><span><b>5</b> handpicked escapes</span><span><b>QR</b> ticket at your fingertips</span></div></div><Link className="hero-photo" to="/destinations/taman-safari"><img src="https://images.unsplash.com/photo-1535941339077-2dd1c7963098?auto=format&fit=crop&w=1300&q=85" alt="Indonesia's landscapes"/><div><span>Featured escape</span><b>Taman Safari</b><small>Discover more <ArrowRight size={15}/></small></div></Link></section><section className="container section discover"><div className="section-title"><div><p className="kicker">CHOSEN FOR YOU</p><h2>Leave the ordinary behind.</h2></div><Link to="/destinations">View all places <ArrowRight size={17}/></Link></div><div className="grid">{list.slice(0,3).map(d=><DestinationCard key={d.id} d={d}/>)}</div></section><section className="travel-band"><div className="container"><p className="kicker">HOW TOURIFY WORKS</p><h2>One ticket. Every good thing ahead.</h2><div className="journey"><p><b>01</b><span>Find a place that moves you.</span></p><p><b>02</b><span>Book it in a few easy moments.</span></p><p><b>03</b><span>Walk in with your QR ticket.</span></p></div></div></section><Footer/></main>}
-export function Destinations(){const[list,setList]=useState([]),[filters,setFilters]=useState({search:new URLSearchParams(location.search).get('search')||'',category:'All',sort:''});const categories=['All','Theme Park','Water Park','Nature','Beach','Wildlife Park'];useEffect(()=>{const p=new URLSearchParams(filters);api.get('/destinations?'+p).then(r=>setList(r.data))},[filters]);return <main><section className="dest-hero"><div className="container"><p className="eyebrow">EXPLORE INDONESIA</p><h1>Go where the<br/><i>good stories</i> are.</h1><p>Five handpicked destinations, each ready when you are.</p></div></section><section className="container destinations-layout"><aside className="destination-filters"><p className="filter-label">FIND YOUR ESCAPE</p><div className="filter-search"><Search/><input placeholder="Search a place" value={filters.search} onChange={e=>setFilters({...filters,search:e.target.value})}/></div><p className="filter-label">CATEGORY</p><div className="category-list">{categories.map(x=><button className={filters.category===x?'selected':''} onClick={()=>setFilters({...filters,category:x})} key={x}>{x}</button>)}</div><p className="filter-label">SORT BY</p><select value={filters.sort} onChange={e=>setFilters({...filters,sort:e.target.value})}><option value="">Lowest price</option><option value="price_high">Highest price</option><option value="rating">Top rated</option></select></aside><section className="destination-results"><div className="result-heading"><div><p className="kicker">ALL DESTINATIONS</p><h2>Places to feel alive.</h2></div><p>{list.length} places</p></div><div className="grid">{list.map(d=><DestinationCard key={d.id} d={d}/>)}</div>{!list.length&&<div className="empty">No destinations found. Try another search.</div>}</section></section><Footer/></main>}
-export function Detail(){const{slug}=useParams(),[d,setD]=useState(),[qty,setQty]=useState(2),[date,setDate]=useState(''),{user}=useAuth(),nav=useNavigate();useEffect(()=>{api.get('/destinations/slug/'+slug).then(r=>setD(r.data)).catch(()=>nav('/destinations'))},[slug,nav]);if(!d)return <Loading/>;const book=async()=>{if(!user)return nav('/login');if(!date)return toast.error('Please select your visit date');try{const r=await api.post('/bookings',{destination_id:d.id,visit_date:date,quantity:qty});toast.success('Ticket booked successfully');nav('/tickets/'+r.data.ticket.id)}catch(e){toast.error(e.response?.data?.message||'Booking failed')}};return <main className="container page detail"><div className="gallery"><img src={d.image_url} alt={d.name}/><div className="gallery-note"><Star fill="currentColor" size={17}/>{d.rating} · Loved by explorers</div></div><div className="detail-info"><p className="eyebrow"><MapPin size={15}/>{d.location}</p><h1>{d.name}</h1><p className="category">{d.category}</p><p className="long-desc">{d.description}</p><div className="info-row"><Clock/><div><b>Opening hours</b><span>{d.opening_hours}</span></div></div><div className="facilities"><b>Facilities</b><div>{(d.facilities||[]).map(x=><span key={x}><Check size={14}/>{x}</span>)}</div></div><aside className="booking"><div><span>Ticket price</span><strong>{rupiah(d.price)} <small>/ ticket</small></strong></div><label>Visit date<input type="date" min={new Date().toISOString().slice(0,10)} value={date} onChange={e=>setDate(e.target.value)}/></label><label>Ticket quantity<div className="counter"><button onClick={()=>setQty(Math.max(1,qty-1))}><Minus/></button><b>{qty}</b><button onClick={()=>setQty(Math.min(20,qty+1))}><Plus/></button></div></label><div className="total"><span>Total</span><b>{rupiah(d.price*qty)}</b></div><button className="button full" onClick={book}>Book Ticket <ChevronRight size={18}/></button></aside></div></main>}
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Search,
+  ArrowRight,
+  MapPin,
+  Star,
+  CalendarDays,
+  Users,
+  Minus,
+  Plus,
+  Check,
+  Clock,
+  ChevronRight,
+} from "lucide-react";
+import toast from "react-hot-toast";
+import api from "../services/api";
+import { useAuth } from "../contexts/AuthContext";
+import { DestinationCard, Footer, Loading, rupiah } from "../components/Shared";
+export function Home() {
+  const [list, setList] = useState([]),
+    [q, setQ] = useState(""),
+    { user } = useAuth();
+  useEffect(() => {
+    api
+      .get("/destinations")
+      .then((r) => setList(r.data))
+      .catch(() => toast.error("Could not load destinations"));
+  }, []);
+  return (
+    <main>
+      <section className="landing container">
+        <div className="landing-copy">
+          <p className="eyebrow">
+            {user
+              ? `WELCOME BACK, ${user.name.split(" ")[0].toUpperCase()}`
+              : "INDONESIA, MADE EASY"}
+          </p>
+          <h1>
+            Stories worth
+            <br />
+            <i>leaving for.</i>
+          </h1>
+          <p className="landing-lead">
+            A more beautiful way to find, plan, and book your next favourite
+            place.
+          </p>
+          <div className="hero-search">
+            <Search />
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" &&
+                (location.href = `/destinations?search=${q}`)
+              }
+              placeholder="Where do you want to go?"
+            />
+            <Link to={`/destinations?search=${q}`}>
+              Explore <ArrowRight size={17} />
+            </Link>
+          </div>
+          <div className="hero-stats">
+            <span>
+              <b>5</b> handpicked escapes
+            </span>
+            <span>
+              <b>QR</b> ticket at your fingertips
+            </span>
+          </div>
+        </div>
+        <Link className="hero-photo" to="/destinations/taman-safari">
+          <img
+            src="https://images.unsplash.com/photo-1535941339077-2dd1c7963098?auto=format&fit=crop&w=1300&q=85"
+            alt="Indonesia's landscapes"
+          />
+          <div>
+            <span>Featured escape</span>
+            <b>Taman Safari</b>
+            <small>
+              Discover more <ArrowRight size={15} />
+            </small>
+          </div>
+        </Link>
+      </section>
+      <section className="container section discover">
+        <div className="section-title">
+          <div>
+            <p className="kicker">CHOSEN FOR YOU</p>
+            <h2>Leave the ordinary behind.</h2>
+          </div>
+          <Link to="/destinations">
+            View all places <ArrowRight size={17} />
+          </Link>
+        </div>
+        <div className="grid">
+          {list.slice(0, 3).map((d) => (
+            <DestinationCard key={d.id} d={d} />
+          ))}
+        </div>
+      </section>
+      <section className="travel-band">
+        <div className="container">
+          <p className="kicker">HOW TOURIFY WORKS</p>
+          <h2>One ticket. Every good thing ahead.</h2>
+          <div className="journey">
+            <p>
+              <b>01</b>
+              <span>Find a place that moves you.</span>
+            </p>
+            <p>
+              <b>02</b>
+              <span>Book it in a few easy moments.</span>
+            </p>
+            <p>
+              <b>03</b>
+              <span>Walk in with your QR ticket.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+      <Footer />
+    </main>
+  );
+}
+export function Destinations() {
+  const [list, setList] = useState([]),
+    [filters, setFilters] = useState({
+      search: new URLSearchParams(location.search).get("search") || "",
+      category: "All",
+      sort: "",
+    });
+  const categories = [
+    "All",
+    "Theme Park",
+    "Water Park",
+    "Nature",
+    "Beach",
+    "Wildlife Park",
+  ];
+  useEffect(() => {
+    const p = new URLSearchParams(filters);
+    api.get("/destinations?" + p).then((r) => setList(r.data));
+  }, [filters]);
+  return (
+    <main>
+      <section className="dest-hero">
+        <div className="container">
+          <p className="eyebrow">EXPLORE INDONESIA</p>
+          <h1>
+            Go where the
+            <br />
+            <i>good stories</i> are.
+          </h1>
+          <p>Five handpicked destinations, each ready when you are.</p>
+        </div>
+      </section>
+      <section className="container destinations-layout">
+        <aside className="destination-filters">
+          <p className="filter-label">FIND YOUR ESCAPE</p>
+          <div className="filter-search">
+            <Search />
+            <input
+              placeholder="Search a place"
+              value={filters.search}
+              onChange={(e) =>
+                setFilters({ ...filters, search: e.target.value })
+              }
+            />
+          </div>
+          <p className="filter-label">CATEGORY</p>
+          <div className="category-list">
+            {categories.map((x) => (
+              <button
+                className={filters.category === x ? "selected" : ""}
+                onClick={() => setFilters({ ...filters, category: x })}
+                key={x}
+              >
+                {x}
+              </button>
+            ))}
+          </div>
+          <p className="filter-label">SORT BY</p>
+          <select
+            value={filters.sort}
+            onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
+          >
+            <option value="">Lowest price</option>
+            <option value="price_high">Highest price</option>
+            <option value="rating">Top rated</option>
+          </select>
+        </aside>
+        <section className="destination-results">
+          <div className="result-heading">
+            <div>
+              <p className="kicker">ALL DESTINATIONS</p>
+              <h2>Places to feel alive.</h2>
+            </div>
+            <p>{list.length} places</p>
+          </div>
+          <div className="grid">
+            {list.map((d) => (
+              <DestinationCard key={d.id} d={d} />
+            ))}
+          </div>
+          {!list.length && (
+            <div className="empty">
+              No destinations found. Try another search.
+            </div>
+          )}
+        </section>
+      </section>
+      <Footer />
+    </main>
+  );
+}
+export function Detail() {
+  const { slug } = useParams(),
+    [d, setD] = useState(),
+    [qty, setQty] = useState(2),
+    [date, setDate] = useState(""),
+    { user } = useAuth(),
+    nav = useNavigate();
+  useEffect(() => {
+    api
+      .get("/destinations/slug/" + slug)
+      .then((r) => setD(r.data))
+      .catch(() => nav("/destinations"));
+  }, [slug, nav]);
+  if (!d) return <Loading />;
+  const book = async () => {
+    if (!user) return nav("/login");
+    if (!date) return toast.error("Please select your visit date");
+    try {
+      const r = await api.post("/bookings", {
+        destination_id: d.id,
+        visit_date: date,
+        quantity: qty,
+      });
+      toast.success("Ticket booked successfully");
+      nav("/tickets/" + r.data.ticket.id);
+    } catch (e) {
+      toast.error(e.response?.data?.message || "Booking failed");
+    }
+  };
+  return (
+    <main className="container page detail">
+      <div className="gallery">
+        <img src={d.image_url} alt={d.name} />
+        <div className="gallery-note">
+          <Star fill="currentColor" size={17} />
+          {d.rating} · Loved by explorers
+        </div>
+      </div>
+      <div className="detail-info">
+        <p className="eyebrow">
+          <MapPin size={15} />
+          {d.location}
+        </p>
+        <h1>{d.name}</h1>
+        <p className="category">{d.category}</p>
+        <p className="long-desc">{d.description}</p>
+        <div className="info-row">
+          <Clock />
+          <div>
+            <b>Opening hours</b>
+            <span>{d.opening_hours}</span>
+          </div>
+        </div>
+        <div className="facilities">
+          <b>Facilities</b>
+          <div>
+            {(d.facilities || []).map((x) => (
+              <span key={x}>
+                <Check size={14} />
+                {x}
+              </span>
+            ))}
+          </div>
+        </div>
+        <aside className="booking">
+          <div>
+            <span>Ticket price</span>
+            <strong>
+              {rupiah(d.price)} <small>/ ticket</small>
+            </strong>
+          </div>
+          <label>
+            Visit date
+            <input
+              type="date"
+              min={new Date().toISOString().slice(0, 10)}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </label>
+          <label>
+            Ticket quantity
+            <div className="counter">
+              <button onClick={() => setQty(Math.max(1, qty - 1))}>
+                <Minus />
+              </button>
+              <b>{qty}</b>
+              <button onClick={() => setQty(Math.min(20, qty + 1))}>
+                <Plus />
+              </button>
+            </div>
+          </label>
+          <div className="total">
+            <span>Total</span>
+            <b>{rupiah(d.price * qty)}</b>
+          </div>
+          <button className="button full" onClick={book}>
+            Book Ticket <ChevronRight size={18} />
+          </button>
+        </aside>
+      </div>
+    </main>
+  );
+}

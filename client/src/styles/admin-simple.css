@@ -1,31 +1,109 @@
 /* A calm operations UI: clear hierarchy, fewer effects, and less marketing copy. */
-.admin { background: #f7f8f6; color: #17221f; }
-.admin aside { background: #173f38; box-shadow: none; }
-.admin-main { background: #f7f8f6; }
-.admin-hero { background: #fff; color: #17221f; border-bottom: 1px solid #dfe7e2; box-shadow: none; }
-.admin-hero .kicker { color: #71807b; }
-.admin-hero h1 { font-family: 'DM Sans', sans-serif; font-size: 42px; letter-spacing: -.045em; }
-.admin-hero h1 i { color: #187f6d; font-style: normal; }
-.admin-hero > div > p:last-child { color: #71807b; }
-.admin-date { border: 1px solid #dfe7e2; background: #f7f8f6; color: #52635d; }
-.admin-date b { color: #17221f; }
-.dashboard-stats { gap: 12px; }
-.dashboard-stats > div { min-height: 126px; border: 1px solid #dfe7e2; border-radius: 12px; box-shadow: none; background: #fff; }
-.dashboard-stats > div svg { background: #eef5f1; color: #187f6d; }
-.dashboard-stats .revenue-card { background: #fff; }
-.admin-panels { gap: 12px; }
-.operations-card, .activity-card { border: 1px solid #dfe7e2; border-radius: 12px; box-shadow: none; }
-.operations-card { background: #fff; }
-.operations-card h2 { font-family: 'DM Sans', sans-serif; font-size: 30px; letter-spacing: -.04em; }
-.operations-card > div > p:last-of-type { color: #71807b; }
-.operations-card .button { border-radius: 9px; }
-.scanner-orb { display: none; }
-.activity-card { background: #fff; }
-.activity-card h3 { font-size: 17px; }
-.activity-card > p:nth-of-type(2) { color: #71807b; }
-.admin-main > h1 { font-family: 'DM Sans', sans-serif; font-size: 35px; }
-.data-table { border-radius: 12px; box-shadow: none; }
+.admin {
+  background: #f7f8f6;
+  color: #17221f;
+}
+.admin aside {
+  background: #173f38;
+  box-shadow: none;
+}
+.admin-main {
+  background: #f7f8f6;
+}
+.admin-hero {
+  background: #fff;
+  color: #17221f;
+  border-bottom: 1px solid #dfe7e2;
+  box-shadow: none;
+}
+.admin-hero .kicker {
+  color: #71807b;
+}
+.admin-hero h1 {
+  font-family: "DM Sans", sans-serif;
+  font-size: 42px;
+  letter-spacing: -0.045em;
+}
+.admin-hero h1 i {
+  color: #187f6d;
+  font-style: normal;
+}
+.admin-hero > div > p:last-child {
+  color: #71807b;
+}
+.admin-date {
+  border: 1px solid #dfe7e2;
+  background: #f7f8f6;
+  color: #52635d;
+}
+.admin-date b {
+  color: #17221f;
+}
+.dashboard-stats {
+  gap: 12px;
+}
+.dashboard-stats > div {
+  min-height: 126px;
+  border: 1px solid #dfe7e2;
+  border-radius: 12px;
+  box-shadow: none;
+  background: #fff;
+}
+.dashboard-stats > div svg {
+  background: #eef5f1;
+  color: #187f6d;
+}
+.dashboard-stats .revenue-card {
+  background: #fff;
+}
+.admin-panels {
+  gap: 12px;
+}
+.operations-card,
+.activity-card {
+  border: 1px solid #dfe7e2;
+  border-radius: 12px;
+  box-shadow: none;
+}
+.operations-card {
+  background: #fff;
+}
+.operations-card h2 {
+  font-family: "DM Sans", sans-serif;
+  font-size: 30px;
+  letter-spacing: -0.04em;
+}
+.operations-card > div > p:last-of-type {
+  color: #71807b;
+}
+.operations-card .button {
+  border-radius: 9px;
+}
+.scanner-orb {
+  display: none;
+}
+.activity-card {
+  background: #fff;
+}
+.activity-card h3 {
+  font-size: 17px;
+}
+.activity-card > p:nth-of-type(2) {
+  color: #71807b;
+}
+.admin-main > h1 {
+  font-family: "DM Sans", sans-serif;
+  font-size: 35px;
+}
+.data-table {
+  border-radius: 12px;
+  box-shadow: none;
+}
 @media (max-width: 900px) {
-  .admin-hero h1 { font-size: 34px; }
-  .operations-card h2 { font-size: 26px; }
+  .admin-hero h1 {
+    font-size: 34px;
+  }
+  .operations-card h2 {
+    font-size: 26px;
+  }
 }

@@ -1,8 +1,95 @@
-import { Router } from 'express'; import { supabase } from '../config/supabase.js'; import { authenticateToken, requireAdmin } from '../middleware/auth.js'
-const r=Router(), valid=['Water Park','Theme Park','Wildlife Park','Nature','Beach'];
-r.get('/',async(req,res,next)=>{try{let q=supabase.from('destinations').select('*');if(req.query.search)q=q.ilike('name',`%${req.query.search}%`);if(req.query.category&&req.query.category!=='All')q=q.eq('category',req.query.category);const sort=req.query.sort;q=q.order(sort==='price_high'?'price':sort==='rating'?'rating':'price',{ascending:sort!=='price_high'});const {data,error}=await q;if(error)throw error;res.json(data)}catch(e){next(e)}})
-r.get('/slug/:slug',async(req,res,next)=>{try{const {data,error}=await supabase.from('destinations').select('*').eq('slug',req.params.slug).single();if(error)return res.status(404).json({message:'Destination not found'});res.json(data)}catch(e){next(e)}})
-r.get('/:id',async(req,res,next)=>{try{const {data,error}=await supabase.from('destinations').select('*').eq('id',req.params.id).single();if(error)return res.status(404).json({message:'Destination not found'});res.json(data)}catch(e){next(e)}})
-r.post('/',authenticateToken,requireAdmin,async(req,res,next)=>{try{if(!req.body.name||!valid.includes(req.body.category))return res.status(422).json({message:'A valid name and category are required'});const {data,error}=await supabase.from('destinations').insert(req.body).select().single();if(error)throw error;res.status(201).json(data)}catch(e){next(e)}})
-r.put('/:id',authenticateToken,requireAdmin,async(req,res,next)=>{try{const {data,error}=await supabase.from('destinations').update({...req.body,updated_at:new Date()}).eq('id',req.params.id).select().single();if(error)throw error;res.json(data)}catch(e){next(e)}})
-r.delete('/:id',authenticateToken,requireAdmin,async(req,res,next)=>{try{const {error}=await supabase.from('destinations').delete().eq('id',req.params.id);if(error)throw error;res.status(204).end()}catch(e){next(e)}});export default r
+import { Router } from "express";
+import { supabase } from "../config/supabase.js";
+import { authenticateToken, requireAdmin } from "../middleware/auth.js";
+const r = Router(),
+  valid = ["Water Park", "Theme Park", "Wildlife Park", "Nature", "Beach"];
+r.get("/", async (req, res, next) => {
+  try {
+    let q = supabase.from("destinations").select("*");
+    if (req.query.search) q = q.ilike("name", `%${req.query.search}%`);
+    if (req.query.category && req.query.category !== "All")
+      q = q.eq("category", req.query.category);
+    const sort = req.query.sort;
+    q = q.order(
+      sort === "price_high" ? "price" : sort === "rating" ? "rating" : "price",
+      { ascending: sort !== "price_high" },
+    );
+    const { data, error } = await q;
+    if (error) throw error;
+    res.json(data);
+  } catch (e) {
+    next(e);
+  }
+});
+r.get("/slug/:slug", async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from("destinations")
+      .select("*")
+      .eq("slug", req.params.slug)
+      .single();
+    if (error)
+      return res.status(404).json({ message: "Destination not found" });
+    res.json(data);
+  } catch (e) {
+    next(e);
+  }
+});
+r.get("/:id", async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from("destinations")
+      .select("*")
+      .eq("id", req.params.id)
+      .single();
+    if (error)
+      return res.status(404).json({ message: "Destination not found" });
+    res.json(data);
+  } catch (e) {
+    next(e);
+  }
+});
+r.post("/", authenticateToken, requireAdmin, async (req, res, next) => {
+  try {
+    if (!req.body.name || !valid.includes(req.body.category))
+      return res
+        .status(422)
+        .json({ message: "A valid name and category are required" });
+    const { data, error } = await supabase
+      .from("destinations")
+      .insert(req.body)
+      .select()
+      .single();
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (e) {
+    next(e);
+  }
+});
+r.put("/:id", authenticateToken, requireAdmin, async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from("destinations")
+      .update({ ...req.body, updated_at: new Date() })
+      .eq("id", req.params.id)
+      .select()
+      .single();
+    if (error) throw error;
+    res.json(data);
+  } catch (e) {
+    next(e);
+  }
+});
+r.delete("/:id", authenticateToken, requireAdmin, async (req, res, next) => {
+  try {
+    const { error } = await supabase
+      .from("destinations")
+      .delete()
+      .eq("id", req.params.id);
+    if (error) throw error;
+    res.status(204).end();
+  } catch (e) {
+    next(e);
+  }
+});
+export default r;
