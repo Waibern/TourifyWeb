@@ -17,7 +17,7 @@ function TicketCard({ t }) {
   const d = t.bookings.destinations;
   return (
     <article className="ticket-card">
-      <img src={d.image_url} />
+      <img src={d.image_url} alt={d.name} />
       <div>
         <span className={"status " + t.status}>{t.status}</span>
         <h3>{d.name}</h3>

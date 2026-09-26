@@ -320,7 +320,7 @@ function Table({ view, data, reload }) {
               {view === "Destinations" ? (
                 <>
                   <td>
-                    <img src={x.image_url} />
+                    <img src={x.image_url} alt={x.name} />
                     {x.name}
                   </td>
                   <td>{x.category}</td>
